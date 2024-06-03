@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const database = require("./database");
+const userController = require("./controllers/userController.js")
 const PORT = 8000;
 
 //middleware
@@ -18,16 +19,7 @@ app.get("/", (req, res) => {
     })
 });
 
-app.get("/API/users", (req,res) => {
-    database.query(`SELECT * FROM USERS`, (err, result) => {
-        if(err){
-            res.status(500).json({err: "Something wrong"})
-            throw err
-        }
-        console.log(result);
-        res.json({result});
-    })
-});
+app.get("/API/users", userController.getAllUsers);
 
 //method post menambahkan data user baru
 app.post("/api/users", (req, res) => {
@@ -73,21 +65,7 @@ app.delete("/api/users/:id", (req, res) => {
     res.json({message: `user dengan ID ${id} telah dihapus!`});
 });
 
-app.get("/api/users/:id", (req, res) => {
-    const { id } = req.params;
-    if(!id){
-        return res.status(400).json({
-            error: "silahkan isi field id users!",
-        });
-    }
-    res.json({
-        data: {
-            name: "pras",
-            email: "pras@gmail.com",
-            password: "pras1122",
-        }
-    });
-});
+app.get("/api/users/:id", userController.getUserById);
 
 app.listen(PORT, () =>
     console.log(`Server is running on http://localhost:${PORT}`)
