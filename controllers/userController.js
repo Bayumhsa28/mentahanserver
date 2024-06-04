@@ -96,7 +96,20 @@ const deleteUserById = (req, res) => {
             error: "silahkan isi field id users!",
         });
     }
-    res.json({ message: `user dengan ID ${id} telah dihapus!` });
+    database.query(`DELETE FROM users WHERE id = ?`, [id], (err, results) => {
+        if(err){
+            console.error(err)
+            return res.status(500).json({
+                error: "Error while deleting user!",
+            });
+        }
+        if(results.affectedRows === 0){
+            return res.status(400).json({
+                error: `User dengan ID ${id} telah dihapus!`,
+            });
+        }
+        res.json({ message: `user dengan ID ${id} telah dihapus!` });
+    });
 };
 module.exports = {
     getAllUsers,
