@@ -1,11 +1,11 @@
 const express = require("express");
 const userController = require("./controllers/userController.js")
 const errorhandler = require("./middleware/errorHandler.js");
-const database = require("./database");
+const database = require("./database.js");
 const logger = require("./middleware/logger.js");
 const upload = require("./utils/upload.js");
 const multerError = require("./middleware/multerError.js");
-
+const userRoutes = require("./routers/userRoutes.js");
 
 const app = express();
 const PORT = 8000;
@@ -17,29 +17,31 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 //menangani error 
 app.use(errorhandler);
+app.use(logger);
 
-
-//route http://localhost:8000
-//method get
+// //route http://localhost:8000
+// //method get
 app.get("/", (req, res) => {
     res.json({
         message: "Berhasil melakukan routing aja !!!",
     })
 });
 
-app.get("/API/users", userController.getAllUsers);
+// app.get("/API/users", userController.getAllUsers);
 
-//method post menambahkan data user baru
-app.post("/api/users", userController.createNewUser);
+// //method post menambahkan data user baru
+// app.post("/api/users", userController.createNewUser);
 
-//metode put
-app.put("/api/users/:id", userController.updateUserById);
+// //metode put
+// app.put("/api/users/:id", userController.updateUserById);
 
-app.delete("/api/users/:id", userController.deleteUserById);
+// app.delete("/api/users/:id", userController.deleteUserById);
 
-app.get("/api/users/:id", userController.getUserById);
+// app.get("/api/users/:id", userController.getUserById);
 
-app.post("/file-upload", upload.single("file"), multerError, (req, res) => {
+app.use('/api/users', userRoutes);
+
+app.post("/file-upload", upload.single("file"), [multerError], (req, res) => {
     res.json({ message: "File uploaded!" });
 });
 
