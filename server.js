@@ -24,7 +24,7 @@ app.use(logger);
 app.get("/", (req, res) => {
     res.json({
         message: "Berhasil melakukan routing aja !!!",
-    })
+    });
 });
 
 // app.get("/API/users", userController.getAllUsers);
@@ -43,7 +43,7 @@ app.use('/api/users', userRoutes);
 
 app.post("/file-upload", upload.single("file"), [multerError], (req, res) => {
     res.json({ message: "File uploaded!" });
-});
+  });
 
 app.listen(PORT, () =>
     console.log(`Server is running on http://localhost:${PORT}`)

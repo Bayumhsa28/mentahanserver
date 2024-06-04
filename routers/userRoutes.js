@@ -1,21 +1,24 @@
 const express = require("express");
 const app = express();
 const router = express.Router();
-const errorhandler = require("./controllers/userController.js");
+const userController = require("../controllers/userController");
 
-//route http://localhost:8000
-//method get
+// ROUTE http://localhost:8000/
 
+// ROUTING Users
+// Ambil data semua users
 router.get("/", userController.getAllUsers);
 
-//method post menambahkan data user baru
+// METHOD POST MENAMBAHKAN DATA USER BARU
 router.post("/", userController.createNewUser);
 
-//metode put
+// PUT METHOD Mengupdate data user sesuai dengan ID-nya
 router.put("/:id", userController.updateUserById);
 
+// METHOD DELETE untuk menghapus user
 router.delete("/:id", userController.deleteUserById);
 
+// METHOD GET dengan paramter id
 router.get("/:id", userController.getUserById);
 
 module.exports = router;
